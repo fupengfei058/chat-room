@@ -3,8 +3,10 @@
 ### 说明：
 一个 PHP 的 websocket 的聊天室
 
-### 与swoole比较：
-PHP的socket扩展是一套socket api，而swoole是用C实现，它的socket是C库的socket，更加底层可控。
+### websocket介绍：
+WebSocket是Html5 一种新的协议。它实现了浏览器与服务器全双工通信，能更好的节省服务器资源和带宽并达到实时通讯，它建立在TCP之上，同HTTP一样通过TCP来传输数据，但是它和HTTP最大不同是：
+WebSocket是一种双向通信协议，在建立连接后，WebSocket服务器和Browser/Client Agent都能主动的向对方发送或接收数据，就像 Socket 一样；
+WebSocket需要类似 TCP 的客户端和服务器端通过握手连接，连接成功后才能相互通信。
 
 ### 简易效果：
 ![github](https://github.com/fupengfei058/websocket/blob/master/1.png)

@@ -8,7 +8,7 @@
  */
 
 error_reporting(E_ALL);
-set_time_limit(0); // 设置超时时间为无限,防止超时
+set_time_limit(0);
 date_default_timezone_set('Asia/shanghai');
 
 class WebSocket
@@ -16,15 +16,6 @@ class WebSocket
     const LOG_PATH          = '/tmp/';
     const LISTEN_SOCKET_NUM = 9;
 
-    /**
-     * @var array
-     *            [
-     *            (int)$socket => [
-     *            info
-     *            ]
-     *            ]
-     *            todo 解释socket与file号对应
-     */
     private $sockets = [];
     private $master;
 
@@ -32,11 +23,8 @@ class WebSocket
     {
         try {
             $this->master = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
-            // 设置IP和端口重用,在重启服务器后能重新使用此端口;
             socket_set_option($this->master, SOL_SOCKET, SO_REUSEADDR, 1);
-            // 将IP和端口绑定在服务器socket上;
             socket_bind($this->master, $host, $port);
-            // listen函数使用主动连接套接口变为被连接套接口，使得一个进程可以接受其它进程的请求，从而成为一个服务器进程。在TCP服务器编程中listen函数把进程变为一个服务器，并指定相应的套接字变为被动连接,其中的能存储的请求不明的socket数目。
             socket_listen($this->master, self::LISTEN_SOCKET_NUM);
         } catch (\Exception $e) {
             $err_code = socket_last_error();
@@ -149,7 +137,6 @@ class WebSocket
             // 如果可读的是服务器socket,则处理连接逻辑
             if ($socket == $this->master) {
                 $client = socket_accept($this->master);
-                // 创建,绑定,监听后accept函数将会接受socket要来的连接,一旦有一个连接成功,将会返回一个新的socket资源用以交互,如果是一个多个连接的队列,只会处理第一个,如果没有连接的话,进程将会被阻塞,直到连接上.如果用set_socket_blocking或socket_set_noblock()设置了阻塞,会返回false;返回资源后,将会持续等待连接。
                 if (false === $client) {
                     $this->error([
                         'err_accept',
@@ -161,8 +148,8 @@ class WebSocket
                 self::connect($client);
                 continue;
             }
-                // 如果可读的是其他已连接socket,则读取其数据,并处理应答逻辑
-                $bytes = @socket_recv($socket, $buffer, 2048, 0);
+            // 如果可读的是其他已连接socket,则读取其数据,并处理应答逻辑
+            $bytes = @socket_recv($socket, $buffer, 2048, 0);
             if ($bytes < 9) {
                 $recv_msg = $this->disconnect($socket);
             } else {

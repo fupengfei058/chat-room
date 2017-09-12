@@ -9,4 +9,4 @@ WebSocket是一种双向通信协议，在建立连接后，WebSocket服务器�
 WebSocket需要类似 TCP 的客户端和服务器端通过握手连接，连接成功后才能相互通信。
 
 ### 简易效果：
-![github](https://github.com/fupengfei058/websocket/blob/master/1.png)
+![github](https://github.com/fupengfei058/chat-room/blob/master/doc/1.png)
